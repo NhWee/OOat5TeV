@@ -150,7 +150,7 @@ int main()
     std::string filename2="cmd /c del Nk_*.csv";
     system(filename2.c_str());
 
-    std::string filename3="python Nk_plot.py";
+    std::string filename3="python ../Nk_plot.py";
     system(filename3.c_str());
 
     auto end=sc.now();
