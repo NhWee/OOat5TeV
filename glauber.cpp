@@ -99,6 +99,7 @@ struct GlauberResult {
     double Npart_A;
     double Npart_B;
     double Npart;
+    double dNch_deta;
 };
 
 GlauberResult calculate_glauber(double b) {
@@ -148,6 +149,14 @@ GlauberResult calculate_glauber(double b) {
     res.Npart_A = Npart_A_sum;
     res.Npart_B = Npart_B_sum;
     res.Npart = Npart_A_sum + Npart_B_sum;
+    
+    // Two-component model parameters tuned for OO at 5.36 TeV to match dNch/deta(0) = 135
+    // n_pp is the multiplicity in pp collisions (~6.8)
+    // x_hard is the fraction of hard component (~0.13)
+    const double n_pp = 6.8; 
+    const double x_hard = 0.13;
+    res.dNch_deta = n_pp * ((1.0 - x_hard) * res.Npart / 2.0 + x_hard * res.Ncoll);
+    
     return res;
 }
 
@@ -173,14 +182,15 @@ int main() {
         return 1;
     }
     
-    outfile << "b,Tab,Ncoll,Npart_A,Npart_B,Npart\n";
+    outfile << "b,Tab,Ncoll,Npart_A,Npart_B,Npart,dNch_deta\n";
     
     std::cout << "\nCalculating Glauber parameters as a function of impact parameter b..." << std::endl;
     std::cout << std::left << std::setw(8) << "b (fm)" 
               << std::setw(12) << "Tab (fm^-2)" 
               << std::setw(10) << "Ncoll" 
-              << std::setw(10) << "Npart" << std::endl;
-    std::cout << "----------------------------------------------" << std::endl;
+              << std::setw(10) << "Npart" 
+              << std::setw(12) << "dNch/deta" << std::endl;
+    std::cout << "--------------------------------------------------------" << std::endl;
     
     for (double b = 0.0; b <= 10.0; b += 0.1) {
         GlauberResult res = calculate_glauber(b);
@@ -190,7 +200,8 @@ int main() {
                 << res.Ncoll << "," 
                 << res.Npart_A << "," 
                 << res.Npart_B << "," 
-                << res.Npart << "\n";
+                << res.Npart << ","
+                << res.dNch_deta << "\n";
                 
         // Print every 1.0 fm to stdout
         if (std::abs(std::round(res.b * 10) - res.b * 10) < 1e-5 && 
@@ -201,7 +212,8 @@ int main() {
                       << std::setw(12) << res.Tab 
                       << std::setprecision(2)
                       << std::setw(10) << res.Ncoll 
-                      << std::setw(10) << res.Npart << std::endl;
+                      << std::setw(10) << res.Npart 
+                      << std::setw(12) << res.dNch_deta << std::endl;
         }
     }
     
