@@ -74,13 +74,13 @@ def main():
     plt.figure(figsize=(10, 8.5))
     r_grid = np.linspace(0, 7.0, 400)
 
-    # Plot experimental data (using raw corrected curves)
-    plt.plot(r_exp_o16, val_exp_o16, color='#0f172a', linewidth=3.0, 
-             label='Experimental data (rho_ch, NPA 150 631, 1970)')
+    # Plot experimental data as red squares (downsampled by selecting every 150th point)
+    plt.plot(r_exp_o16[::150], val_exp_o16[::150], color='#ef4444', marker='s', linestyle='None', 
+             markersize=6, label='Experimental data (rho_ch, NPA 150 631, 1970)', zorder=5)
 
-    # Plot only Opar curve (multiplied by 4pi to match 4pi * rho_c)
-    plt.plot(r_grid, 4.0 * np.pi * rho_opar(r_grid), color='#ef4444', linewidth=2.5, linestyle='-',
-             label=r'Opar (3pF, de Vries 1987, s=2.72 fm)')
+    # Plot only Opar curve as a solid black line (multiplied by 4pi to match 4pi * rho_c)
+    plt.plot(r_grid, 4.0 * np.pi * rho_opar(r_grid), color='#0f172a', linewidth=2.5, linestyle='-',
+             label=r'Opar (3pF, de Vries 1987, s=2.72 fm)', zorder=4)
 
     # Formatting and styling
     plt.title(r'$^{16}\mathrm{O}$ Nuclear Charge Density distributions $4\pi \rho_c(r)$', fontsize=15, fontweight='bold', color=COLOR_TEXT, pad=15)
