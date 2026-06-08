@@ -35,20 +35,22 @@ def main():
     extracted_dir = r"C:\Users\Administrator\.gemini\antigravity\scratch\extracted"
     
     # ----------------------------------------------------
-    # Load and Correct Extracted Curves (Scale by 10.0 to match 4pi * rho_c)
+    # Load and Correct Extracted Curves (Scale by 10.7588 to correct PDF Y-axis calibration error)
     # ----------------------------------------------------
-    correction_factor = 10.0
+    # The PDF tick labels 0 to 1.2 are separated by 341.721 pt, but the extraction script
+    # used a scale of 367.6519 pt. The exact correction factor is 10.0 * 367.6519 / 341.721 = 10.7588.
+    correction_factor = 10.7588
     
     # Curve 1 is the Sick & McCarthy experimental data for Oxygen-16
     data_o16_exp = np.loadtxt(os.path.join(extracted_dir, "odensity_curve_1.txt"))
     r_exp_o16 = data_o16_exp[:, 0]
-    # Multiply by 10 to restore the exact 4pi * rho_c values plotted in the paper
+    # Multiply by 10.7588 to restore the exact 4pi * rho_c values plotted in the paper
     val_exp_o16 = data_o16_exp[:, 1] * correction_factor
     
     # Curve 4 is the exact Osat (NNLOsat) profile from the paper
     data_osat = np.loadtxt(os.path.join(extracted_dir, "odensity_curve_4.txt"))
     r_osat = data_osat[:, 0]
-    # Multiply by 10
+    # Multiply by 10.7588
     val_osat = data_osat[:, 1] * correction_factor
 
     # ----------------------------------------------------
