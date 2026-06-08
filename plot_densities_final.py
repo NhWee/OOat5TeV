@@ -74,21 +74,13 @@ def main():
     plt.figure(figsize=(10, 8.5))
     r_grid = np.linspace(0, 7.0, 400)
 
-    # Plot experimental data and Osat (using raw corrected curves)
+    # Plot experimental data (using raw corrected curves)
     plt.plot(r_exp_o16, val_exp_o16, color='#0f172a', linewidth=3.0, 
-             label='Experimental FB (Sick & McCarthy 1970)')
-    plt.plot(r_osat, val_osat, color='#10b981', linewidth=2.5, 
-             label='Osat (exact ab-initio NNLOsat profile)')
+             label='Experimental data (rho_ch, NPA 150 631, 1970)')
 
-    # Plot analytical curves (multiplied by 4pi to match 4pi * rho_c)
-    plt.plot(r_grid, 4.0 * np.pi * rho_opar(r_grid), color='#ef4444', linewidth=2.0, linestyle='-',
-             label=r'Odat/Opar (3pF Standard, $R=2.608, a=0.513, w=-0.051$)')
-    plt.plot(r_grid, 4.0 * np.pi * rho_opar2(r_grid), color='#3b82f6', linewidth=2.0, linestyle='--',
-             label=r'Opar2 (3pF fit to NNLOsat, $R=1.85, a=0.497, w=0.912$)')
-    plt.plot(r_grid, 4.0 * np.pi * rho_oho(r_grid), color='#f59e0b', linewidth=2.0, linestyle='-.',
-             label=r'Oho (HO de Vries, $a_{\mathrm{HO}}=1.833, \alpha=1.544$)')
-    plt.plot(r_grid, 4.0 * np.pi * rho_oho2(r_grid), color='#8b5cf6', linewidth=2.2, linestyle=':',
-             label=r'Oho2 (HO new fit to data, $a_{\mathrm{HO}}=1.819, \alpha=1.506$)')
+    # Plot only Opar curve (multiplied by 4pi to match 4pi * rho_c)
+    plt.plot(r_grid, 4.0 * np.pi * rho_opar(r_grid), color='#ef4444', linewidth=2.5, linestyle='-',
+             label=r'Opar (3pF, de Vries 1987, s=2.72 fm)')
 
     # Formatting and styling
     plt.title(r'$^{16}\mathrm{O}$ Nuclear Charge Density distributions $4\pi \rho_c(r)$', fontsize=15, fontweight='bold', color=COLOR_TEXT, pad=15)
