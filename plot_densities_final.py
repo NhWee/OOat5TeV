@@ -76,8 +76,8 @@ def main():
     plt.figure(figsize=(10, 8.5))
     r_grid = np.linspace(0, 7.0, 400)
 
-    # Plot experimental data as red squares (downsampled by selecting every 150th point)
-    plt.plot(r_exp_o16[::150], val_exp_o16[::150], color='#ef4444', marker='s', linestyle='None', 
+    # Plot experimental data as red squares (downsampled by selecting every 22nd point to get ~12 points in r < 2 fm)
+    plt.plot(r_exp_o16[::22], val_exp_o16[::22], color='#ef4444', marker='s', linestyle='None', 
              markersize=6, label='Experimental data (rho_ch, NPA 150 631, 1970)', zorder=5)
 
     # Plot only Opar curve as a solid black line (multiplied by 4pi to match 4pi * rho_c)
