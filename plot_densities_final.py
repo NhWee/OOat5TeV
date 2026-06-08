@@ -47,20 +47,20 @@ def main():
     # Multiply by 10.7588 to restore the exact 4pi * rho_c values plotted in the paper
     val_exp_o16 = data_o16_exp[:, 1] * correction_factor
     
-    # Curve 4 is the exact Osat (NNLOsat) profile from the paper
-    data_osat = np.loadtxt(os.path.join(extracted_dir, "odensity_curve_4.txt"))
-    r_osat = data_osat[:, 0]
+    # Curve 5 is the Odat (3pF + corrections) profile from the paper
+    data_odat = np.loadtxt(os.path.join(extracted_dir, "odensity_curve_5.txt"))
+    r_odat = data_odat[:, 0]
     # Multiply by 10.7588
-    val_osat = data_osat[:, 1] * correction_factor
+    val_odat = data_odat[:, 1] * correction_factor
 
     # ----------------------------------------------------
     # Compute Volume Integrals of Curves (\int \rho * r^2 dr = Z)
     # ----------------------------------------------------
     int_exp_o16 = trapezoid_integration(r_exp_o16**2 * val_exp_o16, r_exp_o16)
-    int_osat = trapezoid_integration(r_osat**2 * val_osat, r_osat)
+    int_odat = trapezoid_integration(r_odat**2 * val_odat, r_odat)
     
     print(f"Corrected Experimental Curve Volume Integral: Z = {int_exp_o16:.4f} (expected ~7.8 due to tail cut-off)")
-    print(f"Corrected Osat Curve Volume Integral: Z = {int_osat:.4f} (expected ~7.8 due to tail cut-off)")
+    print(f"Corrected Odat Curve Volume Integral: Z = {int_odat:.4f} (expected ~7.8 due to tail cut-off)")
 
     # ----------------------------------------------------
     # Define Theoretical Analytical Models (Normalized to Z=8)
@@ -80,9 +80,17 @@ def main():
     plt.plot(r_exp_o16[::22], val_exp_o16[::22], color='#ef4444', marker='s', linestyle='None', 
              markersize=6, label='Experimental data (rho_ch, NPA 150 631, 1970)', zorder=5)
 
-    # Plot only Opar curve as a solid black line (multiplied by 4pi to match 4pi * rho_c)
+    # Plot Opar curve as a solid black line (multiplied by 4pi to match 4pi * rho_c)
     plt.plot(r_grid, 4.0 * np.pi * rho_opar(r_grid), color='#0f172a', linewidth=2.5, linestyle='-',
              label=r'Opar (3pF, de Vries 1987, s=2.72 fm)', zorder=4)
+
+    # Plot Oho2 curve as a purple dotted line (multiplied by 4pi)
+    plt.plot(r_grid, 4.0 * np.pi * rho_oho2(r_grid), color='#8b5cf6', linewidth=2.2, linestyle=':',
+             label=r'Oho2 (HO fit, s=2.65 fm)', zorder=3)
+
+    # Plot Odat curve as a green dashed line (using raw corrected curves)
+    plt.plot(r_odat, val_odat, color='#10b981', linewidth=2.2, linestyle='--',
+             label=r'Odat (3pF+corr, Sick 1970, s=2.71 fm)', zorder=2)
 
     # Formatting and styling
     plt.title(r'$^{16}\mathrm{O}$ Nuclear Charge Density distributions $4\pi \rho_c(r)$', fontsize=15, fontweight='bold', color=COLOR_TEXT, pad=15)
